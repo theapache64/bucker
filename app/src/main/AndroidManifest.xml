@@ -39,7 +39,7 @@
                 <!--Allow list-->
                 <data android:host="reddit.com"/>
                 <data android:host="www.reddit.com"/>
-
+                <!--add more websites here. don't forget to update it in allowList in MainActivity-->
 
             </intent-filter>
 

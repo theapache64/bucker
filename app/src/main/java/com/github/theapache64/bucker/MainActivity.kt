@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private val allowList = listOf(
         "reddit.com",
+        // add more websites here. don't forget to add it in manifest file
     )
 
     private val wvBucker by lazy {
