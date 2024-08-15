@@ -10,6 +10,11 @@
 
 > Bucker is a stupid browser that can only load a few URLs. This project is an attempt to reduce my phone usage and help me from jumping into the internet rabbitholes out there ;)
 
+## How it works?
+
+- Disable or uninstall your default browser
+- Install bucker
+
 
 ## ✍️ Author
 
