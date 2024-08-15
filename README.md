@@ -8,7 +8,7 @@
 <img alt="Twitter: theapache64" src="https://img.shields.io/twitter/follow/theapache64.svg?style=social" />
 </a>
 
-> Bucker is a stupid browser that can only load a few URLs. This project is an attempt to reduce my phone usage and help me from jumping into the internet rabbitholes out there ;)
+> Bucker is a stupid browser that can only load a few URLs. This project is an attempt to reduce my phone usage and help me from jumping into the internet rabbit-holes out there ;)
 
 ## How it works?
 

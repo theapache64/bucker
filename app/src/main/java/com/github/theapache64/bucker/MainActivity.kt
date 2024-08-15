@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private val allowList = listOf(
         "reddit.com",
+        "medium.com",
         // add more websites here. don't forget to add it in manifest file
     )
 
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                             host == allowedDomain || host == "www.$allowedDomain"
                         } == null).also { shouldBlock ->
                             if(shouldBlock){
-                                Toast.makeText(this@MainActivity, "$host is trash bruh!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@MainActivity, "$host is trash bruh! am not loading it! \uD83D\uDE45", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
