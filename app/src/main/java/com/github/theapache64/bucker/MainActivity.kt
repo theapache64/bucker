@@ -31,8 +31,12 @@ class MainActivity : AppCompatActivity() {
                         request: WebResourceRequest?,
                     ): Boolean {
                         val host = request?.url?.host ?: return false
-                        return (allowList.find { it.endsWith(host) } != null).also {
-                            println("QuickTag: MainActivity:shouldOverrideUrlLoading: $host -> $it")
+                        return (allowList.find { allowedDomain ->
+                            host == allowedDomain || host == "www.$allowedDomain"
+                        } == null).also { shouldBlock ->
+                            if(shouldBlock){
+                                Toast.makeText(this@MainActivity, "$host is trash bruh!", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
