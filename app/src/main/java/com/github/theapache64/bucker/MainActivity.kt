@@ -1,10 +1,14 @@
 package com.github.theapache64.bucker
 
+import android.R.attr.orientation
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
@@ -16,11 +20,11 @@ import java.net.URL
 @SuppressLint("SetJavaScriptEnabled")
 class MainActivity : AppCompatActivity() {
 
-    private val allowList = listOf(
-        "reddit.com",
-        "medium.com",
-        "ycombinator.com",
-        "tldr.tech",
+    private val allowMap = mapOf<String, String>(
+        "reddit.com" to "https://reddit.com/r/programming",
+        "medium.com" to "https://medium.com/androiddevelopers",
+        "ycombinator.com" to "https://news.ycombinator.com",
+        "tldr.tech" to "https://tldr.tech/",
         // add more websites here. don't forget to add it in manifest file
     )
 
@@ -36,12 +40,13 @@ class MainActivity : AppCompatActivity() {
                         request: WebResourceRequest?,
                     ): Boolean {
                         val host = request?.url?.host ?: return false
-                        return (allowList.find { allowedDomain ->
+                        val allowedDomains = allowMap.keys
+                        return (allowedDomains.find { allowedDomain ->
                             host == allowedDomain || host == "www.$allowedDomain"
                         } == null).let { shouldBlock ->
                             // Current host
                             val currentHost = URL(view?.url).host ?: ""
-                            val isFromAllowedDomain = allowList.find { allowedDomain ->
+                            val isFromAllowedDomain = allowedDomains.find { allowedDomain ->
                                 currentHost.endsWith(allowedDomain)
                             } != null
                             if (shouldBlock && !isFromAllowedDomain) {
@@ -58,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+    private lateinit var linearLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +79,25 @@ class MainActivity : AppCompatActivity() {
         if (incomingUrl.isNotBlank() && incomingUrl != "null") {
             wvBucker.loadUrl(incomingUrl)
         } else {
-            Toast.makeText(this, "No URL passed", Toast.LENGTH_LONG).show()
-            finish()
+            val container = findViewById<FrameLayout>(R.id.main)
+            linearLayout = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
+                for ((domain, url) in allowMap) {
+                    val button = Button(this@MainActivity).apply {
+                        text = "Open $domain"
+                        setOnClickListener {
+                            container.removeView(linearLayout)
+                            wvBucker.loadUrl(url)
+                        }
+                    }
+                    addView(button)
+                }
+            }
+            container.addView(linearLayout)
         }
 
         onBackPressedDispatcher.addCallback {
