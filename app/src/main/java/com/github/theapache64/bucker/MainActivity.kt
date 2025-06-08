@@ -41,23 +41,13 @@ class MainActivity : AppCompatActivity() {
                         } == null).let { shouldBlock ->
                             // Current host
                             val currentHost = URL(view?.url).host ?: ""
-                            println("QuickTag: MainActivity:shouldOverrideUrlLoading: currentHost: $currentHost")
-                            println("QuickTag: MainActivity:shouldOverrideUrlLoading: host: $host")
                             val isFromAllowedDomain = allowList.find { allowedDomain ->
-                                println(
-                                    "QuickTag: MainActivity:shouldOverrideUrlLoading: allowedDomain: $allowedDomain -> ${
-                                        currentHost.endsWith(
-                                            allowedDomain
-                                        )
-                                    }"
-                                )
                                 currentHost.endsWith(allowedDomain)
                             } != null
-                            println("QuickTag: MainActivity:shouldOverrideUrlLoading: isNotFromAllowedList: $isFromAllowedDomain")
                             if (shouldBlock && !isFromAllowedDomain) {
                                 Toast.makeText(
                                     this@MainActivity,
-                                    "$host is trash bruh! am not loading it from $currentHost! \uD83D\uDE45",
+                                    "$host is trash bruh! am not loading it! \uD83D\uDE45",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
