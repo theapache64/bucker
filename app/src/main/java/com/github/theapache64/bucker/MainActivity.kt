@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.net.URL
 
 @SuppressLint("SetJavaScriptEnabled")
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private val allowList = listOf(
         "reddit.com",
         "medium.com",
+        "ycombinator.com",
+        "tldr.tech",
         // add more websites here. don't forget to add it in manifest file
     )
 
@@ -35,10 +38,31 @@ class MainActivity : AppCompatActivity() {
                         val host = request?.url?.host ?: return false
                         return (allowList.find { allowedDomain ->
                             host == allowedDomain || host == "www.$allowedDomain"
-                        } == null).also { shouldBlock ->
-                            if(shouldBlock){
-                                Toast.makeText(this@MainActivity, "$host is trash bruh! am not loading it! \uD83D\uDE45", Toast.LENGTH_SHORT).show()
+                        } == null).let { shouldBlock ->
+                            // Current host
+                            val currentHost = URL(view?.url).host ?: ""
+                            println("QuickTag: MainActivity:shouldOverrideUrlLoading: currentHost: $currentHost")
+                            println("QuickTag: MainActivity:shouldOverrideUrlLoading: host: $host")
+                            val isFromAllowedDomain = allowList.find { allowedDomain ->
+                                println(
+                                    "QuickTag: MainActivity:shouldOverrideUrlLoading: allowedDomain: $allowedDomain -> ${
+                                        currentHost.endsWith(
+                                            allowedDomain
+                                        )
+                                    }"
+                                )
+                                currentHost.endsWith(allowedDomain)
+                            } != null
+                            println("QuickTag: MainActivity:shouldOverrideUrlLoading: isNotFromAllowedList: $isFromAllowedDomain")
+                            if (shouldBlock && !isFromAllowedDomain) {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "$host is trash bruh! am not loading it from $currentHost! \uD83D\uDE45",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
+
+                            shouldBlock && !isFromAllowedDomain
                         }
                     }
                 }

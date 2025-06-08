@@ -42,6 +42,14 @@
 
                 <data android:host="medium.com"/>
                 <data android:host="www.medium.com"/>
+
+                <data android:host="news.ycombinator.com"/>
+                <data android:host="www.news.ycombinator.com"/>
+
+                <data android:host="tldr.tech"/>
+                <data android:host="www.tldr.tech"/>
+
+
                 <!--add more websites here. don't forget to update it in allowList in MainActivity-->
 
             </intent-filter>
